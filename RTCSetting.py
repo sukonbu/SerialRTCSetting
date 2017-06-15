@@ -2,20 +2,18 @@ import serial
 import serial.tools.list_ports
 import time
 
-#  serial test
 ser = serial.Serial()
-ser.baudrate = 9600
-print('portCheck')
-for i in range(100):
-    try:
-        print('port found No.' + i)
-        ser.port = i
-        ser.open()
-        read_serial()
-        break
-    except:
-        i = i
-print('end setting')
+
+
+def main():
+    #  serial test
+    ser.baudrate = 9600
+    print('portCheck')
+    ser.port = list(serial.tools.list_ports.comports())[0][0]
+    print(ser.port)
+    ser.open()
+    read_serial()
+    print('end setting')
 
 
 def read_serial():
@@ -24,6 +22,10 @@ def read_serial():
             data = ser.readline()
             if 'uv' in data:
                 print('connected device')
-                ser.write('s')
+                ser.write('unko')
                 break
     # serial message to Device (RTCmodule)
+
+
+if __name__ == '__main__':
+    main()
