@@ -1,6 +1,7 @@
 import serial
 import serial.tools.list_ports
 import time
+from datetime import datetime
 
 ser = serial.Serial()
 
@@ -13,7 +14,7 @@ def main():
     print(ser.port)
     ser.open()
     read_serial()
-    print('end setting')
+    print('application end')
 
 
 def read_serial():
@@ -22,9 +23,16 @@ def read_serial():
             data = ser.readline()
             if 'uv' in data:
                 print('connected device')
-                ser.write('unko')
+                dt = datetime.now().strftime("%Y,%m,%d,%H,%M,%S")
+                print(dt)
+                ser.write(dt)
                 break
-    # serial message to Device (RTCmodule)
+    while True:
+        if ser.inWaiting() > 0:
+            data = ser.readline()
+            if 'end' in data:
+                print('setting complete!')
+                break
 
 
 if __name__ == '__main__':
